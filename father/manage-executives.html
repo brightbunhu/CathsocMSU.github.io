@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Executives - MSU Catholic Students Union</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>MSU Catholic Students Union</h1>
+            <p>Executive Management</p>
+        </div>
+    </header>
+
+    <main class="content">
+        <section class="executive-management">
+            <h2>Manage Executive Members</h2>
+            
+            <!-- Add New Executive Form -->
+            <div class="add-executive-form">
+                <h3>Add New Executive</h3>
+                <form id="addExecutiveForm">
+                    <div class="form-group">
+                        <label for="memberSelect">Select Member</label>
+                        <select id="memberSelect" required>
+                            <!-- Will be populated with registered members -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="position">Position</label>
+                        <select id="position" required>
+                            <option value="">Select Position</option>
+                            <option value="chairman">Chairman</option>
+                            <option value="vice_chairman">Vice Chairman</option>
+                            <option value="secretary">Secretary</option>
+                            <option value="treasurer">Treasurer</option>
+                            <option value="vice_treasurer">Vice Treasurer</option>
+                            <option value="organizing_secretary">Organizing Secretary</option>
+                            <option value="committee_member">Committee Member</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Add Executive</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Current Executives List -->
+            <div class="current-executives">
+                <h3>Current Executives</h3>
+                <table id="executivesTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Contact</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Will be populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Load existing executives and members
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMembers();
+            loadExecutives();
+        });
+
+        function loadMembers() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const memberSelect = document.getElementById('memberSelect');
+            memberSelect.innerHTML = '<option value="">Select Member</option>';
+            
+            users.forEach(user => {
+                if (user.role === 'member') {
+                    const option = document.createElement('option');
+                    option.value = user.studentId;
+                    option.textContent = user.fullName;
+                    memberSelect.appendChild(option);
+                }
+            });
+        }
+
+        function loadExecutives() {
+            const executives = JSON.parse(localStorage.getItem('executives')) || [];
+            const tbody = document.getElementById('executivesTable').getElementsByTagName('tbody')[0];
+            tbody.innerHTML = '';
+
+            executives.forEach(exec => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${exec.name}</td>
+                    <td>${exec.position}</td>
+                    <td>${exec.contact}</td>
+                    <td>
+                        <button onclick="removeExecutive('${exec.studentId}')" class="btn-danger">Remove</button>
+                    </td>
+                `;
+            });
+        }
+
+        // Add new executive
+        document.getElementById('addExecutiveForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const studentId = document.getElementById('memberSelect').value;
+            const position = document.getElementById('position').value;
+            
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.studentId === studentId);
+            
+            if (!user) return;
+
+            const executive = {
+                studentId: user.studentId,
+                name: user.fullName,
+                position: position,
+                contact: user.phone,
+                email: user.email
+            };
+
+            const executives = JSON.parse(localStorage.getItem('executives')) || [];
+            executives.push(executive);
+            localStorage.setItem('executives', JSON.stringify(executives));
+
+            // Update user role
+            user.role = 'executive';
+            localStorage.setItem('users', JSON.stringify(users));
+
+            loadExecutives();
+            this.reset();
+        });
+
+        // Remove executive
+        function removeExecutive(studentId) {
+            if (!confirm('Are you sure you want to remove this executive?')) return;
+
+            let executives = JSON.parse(localStorage.getItem('executives')) || [];
+            executives = executives.filter(exec => exec.studentId !== studentId);
+            localStorage.setItem('executives', JSON.stringify(executives));
+
+            // Update user role back to member
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.studentId === studentId);
+            if (user) {
+                user.role = 'member';
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            loadExecutives();
+        }
+    </script>
+</body>
+</html> 

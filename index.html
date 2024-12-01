@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSU Catholic Students Union</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="js/init-data.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>MSU Catholic Students Union</h1>
+            <p>Midlands State University</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#prayers">Prayers</a></li>
+                <li><a href="login.html">Member Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Leadership Corner -->
+    <section class="leadership-corner">
+        <h3>Current Leadership</h3>
+        <div class="leadership" id="leadershipContainer">
+            <!-- Leadership will be populated by JavaScript -->
+        </div>
+        <button class="read-more-btn" id="readMoreBtn">Read More</button>
+    </section>
+
+    <main class="content">
+        <section class="welcome mt-2">
+            <h2>Welcome to MSU Catholic Students Union</h2>
+            <p>Uniting Catholic students at Midlands State University in faith, fellowship, and service.</p>
+        </section>
+
+        <section id="events" class="events-section mt-2">
+            <h2>Upcoming Events</h2>
+            <div class="event-cards">
+                <div class="event-card">
+                    <h3>Sunday Mass</h3>
+                    <p>Every Sunday at 10:00 AM</p>
+                    <p>Location: Campus Chapel</p>
+                </div>
+
+                <div class="event-card">
+                    <h3>Bible Study</h3>
+                    <p>Wednesdays at 5:30 PM</p>
+                    <p>Location: Room 101, Main Building</p>
+                </div>
+
+                <div class="event-card">
+                    <h3>Monthly Retreat</h3>
+                    <p>Last Saturday of each month</p>
+                    <p>Location: Varies</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mass-schedule">
+            <h2>Mass Schedule - St. Mary's Parish Senga</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sunday</td>
+                        <td>7:00 AM</td>
+                        <td>St. Mary's Parish</td>
+                        <td>Holy Mass</td>
+                    </tr>
+                    <tr>
+                        <td>Wednesday</td>
+                        <td>6:30 PM</td>
+                        <td>Campus Chapel</td>
+                        <td>Evening Mass</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="prayer-section">
+            <h2>Daily Prayer</h2>
+            <div class="prayer-card">
+                <p class="prayer-text">
+                    "Lord, make me an instrument of your peace.<br>
+                    Where there is hatred, let me sow love;<br>
+                    Where there is injury, pardon;<br>
+                    Where there is doubt, faith..."
+                </p>
+                <p class="prayer-author">- Prayer of St. Francis</p>
+            </div>
+            
+            <div class="rosary-of-day">
+                <h3>Today's Rosary Mystery</h3>
+                <p id="rosaryMystery">Loading...</p>
+                <div class="rosary-details" id="rosaryDetails" style="display: none;">
+                    <div class="mysteries-list">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+                <button class="read-more-btn" id="rosaryReadMore">Read Full Mysteries</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 MSU Catholic Students Union - Midlands State University</p>
+        <p>For God and Learning</p>
+    </footer>
+
+    <script>
+        // Populate leadership section
+        function loadLeadership() {
+            const executives = JSON.parse(localStorage.getItem('executives')) || [];
+            const leadershipContainer = document.getElementById('leadershipContainer');
+            
+            leadershipContainer.innerHTML = executives.map(leader => `
+                <div class="leader">
+                    <img src="${leader.image}" alt="${leader.name}" onerror="this.src='img/default-avatar.png'">
+                    <p class="leader-name">${leader.name}</p>
+                    <p class="leader-position">${leader.position}</p>
+                    <p class="leader-contact">${leader.phone}</p>
+                </div>
+            `).join('');
+
+            // Show/hide read more button based on number of leaders
+            const readMoreBtn = document.getElementById('readMoreBtn');
+            readMoreBtn.style.display = executives.length > 3 ? 'block' : 'none';
+        }
+
+        // Read More button functionality
+        document.getElementById('readMoreBtn').addEventListener('click', function() {
+            const leadershipContainer = document.getElementById('leadershipContainer');
+            const readMoreBtn = document.getElementById('readMoreBtn');
+            
+            if (leadershipContainer.classList.contains('expanded')) {
+                leadershipContainer.classList.remove('expanded');
+                readMoreBtn.textContent = 'Read More';
+                
+                // Scroll back to top of leadership section
+                leadershipContainer.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                leadershipContainer.classList.add('expanded');
+                readMoreBtn.textContent = 'Show Less';
+            }
+        });
+
+        // Load leadership on page load
+        loadLeadership();
+    </script>
+</body>
+</html>

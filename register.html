@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - MSU Catholic Students Union</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>MSU Catholic Students Union</h1>
+            <p>Midlands State University</p>
+        </div>
+    </header>
+
+    <main class="content">
+        <section class="register-form">
+            <h2>New Member Registration</h2>
+            <form id="registerForm">
+                <!-- Personal Information -->
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentId">Student ID</label>
+                    <input type="text" id="studentId" name="studentId" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <!-- Academic Information -->
+                <div class="form-group">
+                    <label for="faculty">Faculty</label>
+                    <select id="faculty" name="faculty" required>
+                        <option value="">Select Faculty</option>
+                        <option value="arts">Arts</option>
+                        <option value="commerce">Commerce</option>
+                        <option value="science">Science</option>
+                        <!-- Add more faculties -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="yearOfStudy">Year of Study</label>
+                    <select id="yearOfStudy" name="yearOfStudy" required>
+                        <option value="">Select Year</option>
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3">3rd Year</option>
+                        <option value="4">4th Year</option>
+                    </select>
+                </div>
+
+                <!-- Church Information -->
+                <div class="form-group">
+                    <label for="parish">Home Parish</label>
+                    <input type="text" id="parish" name="parish" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="diocese">Diocese</label>
+                    <input type="text" id="diocese" name="diocese" required>
+                </div>
+
+                <!-- Account Security -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit">Register</button>
+                </div>
+
+                <p class="text-center">
+                    Already have an account? <a href="login.html">Login here</a>
+                </p>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 MSU Catholic Students Union - Midlands State University</p>
+        <p>For God and Learning</p>
+    </footer>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate passwords match
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            // Create user object
+            const user = {
+                fullName: document.getElementById('fullName').value,
+                studentId: document.getElementById('studentId').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                faculty: document.getElementById('faculty').value,
+                yearOfStudy: document.getElementById('yearOfStudy').value,
+                parish: document.getElementById('parish').value,
+                diocese: document.getElementById('diocese').value,
+                password: password,
+                registrationDate: new Date().toISOString(),
+                role: 'member'
+            };
+
+            // Store user in localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Check if student ID already exists
+            if (users.some(u => u.studentId === user.studentId)) {
+                alert('A user with this Student ID already exists!');
+                return;
+            }
+
+            users.push(user);
+            localStorage.setItem('users', JSON.stringify(users));
+
+            alert('Registration successful! Please login.');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

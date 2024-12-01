@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaplain Dashboard - MSU Catholic Students Union</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>MSU Catholic Students Union</h1>
+            <p>Chaplain Dashboard</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="father/manage-executives.html">Manage Executives</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="chaplain-dashboard">
+        <div class="chaplain-profile">
+            <img src="img/father-sima.jpg" alt="Father Sima" onerror="this.src='img/default-avatar.png'">
+            <h2>Father Sima</h2>
+            <p>University Chaplain</p>
+            <div class="contact-info">
+                <p>Email: father.sima@msu.ac.zw</p>
+                <p>Phone: +263 77 123 4567</p>
+            </div>
+        </div>
+
+        <section class="approval-section">
+            <h2>Pending Approvals</h2>
+            
+            <!-- Announcements Tab -->
+            <div class="approval-tabs">
+                <button class="tab-btn active" onclick="showTab('announcements')">Announcements</button>
+                <button class="tab-btn" onclick="showTab('events')">Events</button>
+            </div>
+
+            <div id="announcements" class="approval-content active">
+                <table class="approval-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>Author</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingAnnouncements">
+                        <!-- Will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="events" class="approval-content">
+                <table class="approval-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pendingEvents">
+                        <!-- Will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/father.js"></script>
+</body>
+</html>

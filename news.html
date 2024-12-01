@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catholic News - MSU Catholic Students Union</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>MSU Catholic Students Union</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="news.html" class="active">News</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="news-container">
+        <section class="news-filters">
+            <h2>News Categories</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All News</button>
+                <button class="filter-btn" data-filter="local">Local News</button>
+                <button class="filter-btn" data-filter="vatican">Vatican News</button>
+                <button class="filter-btn" data-filter="diocese">Diocese News</button>
+            </div>
+        </section>
+
+        <section class="news-feed" id="newsFeed">
+            <!-- News items will be populated here -->
+            <div class="loading-spinner">Loading news...</div>
+        </section>
+    </main>
+
+    <script>
+        // News sources
+        const NEWS_SOURCES = {
+            vatican: 'https://www.vaticannews.va/en.rss.xml',
+            catholic: 'https://www.catholicnewsagency.com/feed',
+            local: 'local-announcements' // Our local storage
+        };
+
+        // Function to fetch and parse RSS feeds
+        async function fetchNews() {
+            try {
+                // Get local announcements
+                const localAnnouncements = JSON.parse(localStorage.getItem('announcements')) || [];
+                const approvedAnnouncements = localAnnouncements.filter(a => a.status === 'approved');
+
+                // Convert announcements to news format
+                const localNews = approvedAnnouncements.map(announcement => ({
+                    title: announcement.title,
+                    content: announcement.content,
+                    date: new Date(announcement.date),
+                    source: 'MSU Catholic Students Union',
+                    type: 'local'
+                }));
+
+                // Fetch external news using RSS proxy (you'll need to set up a proxy server)
+                const externalNews = await fetchExternalNews();
+
+                // Combine and sort all news
+                const allNews = [...localNews, ...externalNews].sort((a, b) => b.date - a.date);
+
+                // Display news
+                displayNews(allNews);
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                document.getElementById('newsFeed').innerHTML = 
+                    '<p class="error-message">Error loading news. Please try again later.</p>';
+            }
+        }
+
+        // Function to display news items
+        function displayNews(newsItems) {
+            const newsFeed = document.getElementById('newsFeed');
+            newsFeed.innerHTML = newsItems.map(item => `
+                <article class="news-card" data-type="${item.type}">
+                    <div class="news-content">
+                        <h3>${item.title}</h3>
+                        <p>${item.content}</p>
+                        <div class="news-meta">
+                            <span class="news-source">${item.source}</span>
+                            <span class="news-date">${item.date.toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // Filter handlers
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Update active button
+                document.querySelectorAll('.filter-btn').forEach(btn => 
+                    btn.classList.remove('active'));
+                e.target.classList.add('active');
+
+                // Filter news
+                const filter = e.target.dataset.filter;
+                const newsCards = document.querySelectorAll('.news-card');
+                newsCards.forEach(card => {
+                    if (filter === 'all' || card.dataset.type === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Initial load
+        fetchNews();
+    </script>
+</body>
+</html> 

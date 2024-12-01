@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MSU Catholic Students Union</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>MSU Catholic Students Union</h1>
+        </div>
+        <nav>
+            <ul id="navMenu">
+                <!-- Navigation will be populated based on user role -->
+            </ul>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <aside class="dashboard-sidebar">
+            <div class="user-info">
+                <img id="userAvatar" src="img/default-avatar.png" alt="User Avatar">
+                <h3 id="userName">Loading...</h3>
+                <p id="userRole">Loading...</p>
+            </div>
+            <div class="sidebar-menu">
+                <!-- Sidebar menu items will be populated based on role -->
+            </div>
+        </aside>
+
+        <section class="dashboard-content">
+            <!-- Dynamic content sections -->
+            <div id="announcementsSection" class="dashboard-section">
+                <h2>Announcements</h2>
+                <div id="announcementsList"></div>
+                <button id="newAnnouncementBtn" class="primary-button">New Announcement</button>
+            </div>
+
+            <div id="eventsSection" class="dashboard-section">
+                <h2>Upcoming Events</h2>
+                <div id="eventsList"></div>
+                <button id="newEventBtn" class="primary-button">New Event</button>
+            </div>
+
+            <div id="paymentsSection" class="dashboard-section">
+                <h2>Payment Status</h2>
+                <div id="paymentsList"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="announcementModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>New Announcement</h2>
+            <form id="announcementForm">
+                <div class="form-group">
+                    <label for="announcementTitle">Title</label>
+                    <input type="text" id="announcementTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="announcementContent">Content</label>
+                    <textarea id="announcementContent" required></textarea>
+                </div>
+                <button type="submit" class="primary-button">Submit for Approval</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>New Event</h2>
+            <form id="eventForm">
+                <div class="form-group">
+                    <label for="eventTitle">Title</label>
+                    <input type="text" id="eventTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventDate">Date</label>
+                    <input type="datetime-local" id="eventDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventLocation">Location</label>
+                    <input type="text" id="eventLocation" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventDescription">Description</label>
+                    <textarea id="eventDescription" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="eventFee">Event Fee (if any)</label>
+                    <input type="number" id="eventFee" min="0" step="0.01">
+                </div>
+                <button type="submit" class="primary-button">Submit for Approval</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // User Role Management
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+
+        // Populate user info
+        document.getElementById('userName').textContent = currentUser.fullName;
+        document.getElementById('userRole').textContent = currentUser.role;
+
+        // Navigation menu based on role
+        const navMenu = document.getElementById('navMenu');
+        const baseMenuItems = `
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+        `;
+
+        const roleSpecificMenu = {
+            father: `
+                <li><a href="approve-posts.html">Approve Posts</a></li>
+                <li><a href="manage-executives.html">Manage Executives</a></li>
+            `,
+            treasurer: `
+                <li><a href="treasurer.html">Manage Payments</a></li>
+                <li><a href="metrics.html">Financial Metrics</a></li>
+                <li><a href="post.html">Create Post</a></li>
+                <li><a href="events.html">Manage Events</a></li>
+            `,
+            executive: `
+                <li><a href="post.html">Create Post</a></li>
+                <li><a href="events.html">Manage Events</a></li>
+                <li><a href="metrics.html">Financial Metrics</a></li>
+            `
+        };
+
+        navMenu.innerHTML = baseMenuItems + (roleSpecificMenu[currentUser.role] || '');
+
+        // Event Handlers
+        document.getElementById('newAnnouncementBtn').addEventListener('click', () => {
+            document.getElementById('announcementModal').style.display = 'block';
+        });
+
+        document.getElementById('newEventBtn').addEventListener('click', () => {
+            document.getElementById('eventModal').style.display = 'block';
+        });
+
+        // Close modal handlers
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', (e) => {
+                e.target.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // Form submission handlers
+        document.getElementById('announcementForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const announcement = {
+                title: document.getElementById('announcementTitle').value,
+                content: document.getElementById('announcementContent').value,
+                author: currentUser.fullName,
+                date: new Date().toISOString(),
+                status: 'pending'
+            };
+            
+            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+            announcements.push(announcement);
+            localStorage.setItem('announcements', JSON.stringify(announcements));
+            
+            alert('Announcement submitted for approval');
+            document.getElementById('announcementModal').style.display = 'none';
+            loadAnnouncements();
+        });
+
+        document.getElementById('eventForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const event = {
+                title: document.getElementById('eventTitle').value,
+                date: document.getElementById('eventDate').value,
+                location: document.getElementById('eventLocation').value,
+                description: document.getElementById('eventDescription').value,
+                fee: document.getElementById('eventFee').value || 0,
+                author: currentUser.fullName,
+                status: 'pending'
+            };
+            
+            const events = JSON.parse(localStorage.getItem('events')) || [];
+            events.push(event);
+            localStorage.setItem('events', JSON.stringify(events));
+            
+            alert('Event submitted for approval');
+            document.getElementById('eventModal').style.display = 'none';
+            loadEvents();
+        });
+
+        // Load content functions
+        function loadAnnouncements() {
+            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+            const announcementsList = document.getElementById('announcementsList');
+            announcementsList.innerHTML = announcements
+                .filter(a => a.status === 'approved')
+                .map(a => `
+                    <div class="announcement-card">
+                        <h3>${a.title}</h3>
+                        <p>${a.content}</p>
+                        <small>Posted by ${a.author} on ${new Date(a.date).toLocaleDateString()}</small>
+                    </div>
+                `).join('');
+        }
+
+        function loadEvents() {
+            const events = JSON.parse(localStorage.getItem('events')) || [];
+            const eventsList = document.getElementById('eventsList');
+            eventsList.innerHTML = events
+                .filter(e => e.status === 'approved')
+                .map(e => `
+                    <div class="event-card">
+                        <h3>${e.title}</h3>
+                        <p>${e.description}</p>
+                        <p>Location: ${e.location}</p>
+                        <p>Date: ${new Date(e.date).toLocaleString()}</p>
+                        ${e.fee > 0 ? `<p>Fee: $${e.fee}</p>` : ''}
+                        <small>Posted by ${e.author}</small>
+                    </div>
+                `).join('');
+        }
+
+        // Initial load
+        loadAnnouncements();
+        loadEvents();
+    </script>
+</body>
+</html>

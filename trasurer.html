@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NMCS - Payment Upload</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>NMCS - Payment Upload</h1>
+    </header>
+
+    <section class="payment-form">
+        <h2>Upload Payment Details</h2>
+        <form id="paymentForm">
+            <!-- Full Name -->
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+
+            <!-- Program -->
+            <div class="form-group">
+                <label for="program">Program</label>
+                <input type="text" id="program" name="program" required>
+            </div>
+
+            <!-- Payment Details -->
+            <div class="form-group">
+                <label for="paymentFor">What has been paid for?</label>
+                <input type="text" id="paymentFor" name="paymentFor" required>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit">Upload Payment</button>
+            </div>
+        </form>
+    </section>
+
+    <script src="js/script.js"></script>
+
+    <script>
+        // JavaScript to handle form submission
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form submission
+
+            // Get form values
+            const fullName = document.getElementById('fullName').value;
+            const program = document.getElementById('program').value;
+            const paymentFor = document.getElementById('paymentFor').value;
+
+            // Save payment information in LocalStorage
+            const payments = JSON.parse(localStorage.getItem('payments')) || [];
+
+            // Store the new payment entry
+            payments.push({ fullName, program, paymentFor });
+            localStorage.setItem('payments', JSON.stringify(payments));
+
+            alert('Payment uploaded successfully!');
+
+            // Clear the form after submission
+            document.getElementById('paymentForm').reset();
+        });
+    </script>
+</body>
+</html>

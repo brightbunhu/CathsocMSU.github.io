@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Prayers - MSU Catholic Students Union</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>MSU Catholic Students Union</h1>
+            <p>Daily Prayers</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="prayers.html" class="active">Prayers</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="prayers-container">
+        <!-- Daily Prayer -->
+        <section class="prayer-section">
+            <h2>Prayer of the Day</h2>
+            <div class="prayer-card" id="dailyPrayer">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Rosary Section -->
+        <section class="rosary-section">
+            <h2>Today's Rosary</h2>
+            <div class="rosary-card">
+                <h3 id="rosaryMystery">Loading...</h3>
+                <div id="rosaryDetails" class="rosary-details" style="display: none;">
+                    <div class="mysteries-list">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+                <button class="read-more-btn" id="rosaryReadMore">Read Full Mysteries</button>
+            </div>
+        </section>
+
+        <!-- Common Catholic Prayers -->
+        <section class="common-prayers">
+            <h2>Common Prayers</h2>
+            <div class="prayer-grid">
+                <div class="prayer-item">
+                    <h3>Our Father</h3>
+                    <div class="prayer-content">
+                        <p>Our Father, who art in heaven,<br>
+                        hallowed be thy name;<br>
+                        thy kingdom come;<br>
+                        thy will be done on earth as it is in heaven.<br>
+                        Give us this day our daily bread;<br>
+                        and forgive us our trespasses<br>
+                        as we forgive those who trespass against us;<br>
+                        and lead us not into temptation,<br>
+                        but deliver us from evil.<br>
+                        Amen.</p>
+                    </div>
+                </div>
+
+                <div class="prayer-item">
+                    <h3>Hail Mary</h3>
+                    <div class="prayer-content">
+                        <p>Hail Mary, full of grace,<br>
+                        the Lord is with thee.<br>
+                        Blessed art thou among women,<br>
+                        and blessed is the fruit of thy womb, Jesus.<br>
+                        Holy Mary, Mother of God,<br>
+                        pray for us sinners,<br>
+                        now and at the hour of our death.<br>
+                        Amen.</p>
+                    </div>
+                </div>
+
+                <div class="prayer-item">
+                    <h3>Glory Be</h3>
+                    <div class="prayer-content">
+                        <p>Glory be to the Father,<br>
+                        and to the Son,<br>
+                        and to the Holy Spirit,<br>
+                        as it was in the beginning,<br>
+                        is now, and ever shall be,<br>
+                        world without end.<br>
+                        Amen.</p>
+                    </div>
+                </div>
+
+                <div class="prayer-item">
+                    <h3>Prayer Before Study</h3>
+                    <div class="prayer-content">
+                        <p>Creator of all things,<br>
+                        true source of light and wisdom,<br>
+                        origin of all being,<br>
+                        graciously let a ray of your light penetrate<br>
+                        the darkness of my understanding.<br>
+                        Give me a keen understanding,<br>
+                        a retentive memory, and<br>
+                        the ability to grasp things correctly.<br>
+                        Amen.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 MSU Catholic Students Union - Midlands State University</p>
+        <p>For God and Learning</p>
+    </footer>
+
+    <script src="js/prayers.js"></script>
+</body>
+</html> 

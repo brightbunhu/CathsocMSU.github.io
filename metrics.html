@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Metrics - MSU Catholic Students Union</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>MSU Catholic Students Union</h1>
+            <p>Financial Metrics</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="metrics.html" class="active">Metrics</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="metrics-container">
+        <!-- Summary Cards -->
+        <section class="metrics-summary">
+            <div class="metric-card">
+                <h3>Total Collections</h3>
+                <p class="metric-value" id="totalCollections">$0.00</p>
+                <p class="metric-label">All time</p>
+            </div>
+            <div class="metric-card">
+                <h3>Semester Offertory</h3>
+                <p class="metric-value" id="semesterOffertory">$0.00</p>
+                <p class="metric-label">Current semester</p>
+            </div>
+            <div class="metric-card">
+                <h3>Total Subscriptions</h3>
+                <p class="metric-value" id="totalSubscriptions">$0.00</p>
+                <p class="metric-label">All subscriptions</p>
+            </div>
+            <div class="metric-card">
+                <h3>Event Revenue</h3>
+                <p class="metric-value" id="eventRevenue">$0.00</p>
+                <p class="metric-label">All events</p>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-grid">
+            <!-- Offertory Trends -->
+            <div class="chart-container">
+                <h3>Sunday Offertory Trends</h3>
+                <canvas id="offertoryChart"></canvas>
+            </div>
+
+            <!-- Subscription Distribution -->
+            <div class="chart-container">
+                <h3>Subscription Distribution</h3>
+                <canvas id="subscriptionChart"></canvas>
+            </div>
+
+            <!-- Payment Types -->
+            <div class="chart-container">
+                <h3>Revenue Sources</h3>
+                <canvas id="revenueSourcesChart"></canvas>
+            </div>
+
+            <!-- Monthly Trends -->
+            <div class="chart-container">
+                <h3>Monthly Collection Trends</h3>
+                <canvas id="monthlyTrendsChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Detailed Tables Section -->
+        <section class="detailed-tables">
+            <!-- Offertory Table -->
+            <div class="table-section">
+                <h3>Sunday Offertory Records</h3>
+                <div class="table-container">
+                    <table id="offertoryTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Week</th>
+                                <th>Month</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Subscription Payments -->
+            <div class="table-section">
+                <h3>Subscription Payments</h3>
+                <div class="subscription-filters">
+                    <button class="filter-btn active" data-type="all">All</button>
+                    <button class="filter-btn" data-type="national">National</button>
+                    <button class="filter-btn" data-type="parish">Parish</button>
+                    <button class="filter-btn" data-type="diocese">Diocese</button>
+                    <button class="filter-btn" data-type="regional">Regional</button>
+                </div>
+                <div class="table-container">
+                    <table id="subscriptionTable">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Event Payments -->
+            <div class="table-section">
+                <h3>Event Payments</h3>
+                <div class="table-container">
+                    <table id="eventPaymentsTable">
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Student Name</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 MSU Catholic Students Union - Midlands State University</p>
+        <p>For God and Learning</p>
+    </footer>
+
+    <script src="js/metrics.js"></script>
+</body>
+</html>

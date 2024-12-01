@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treasurer Dashboard - MSU Catholic Students Union</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>MSU Catholic Students Union</h1>
+            <p>Treasurer Dashboard</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="metrics.html">Financial Metrics</a></li>
+                <li><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="treasurer-dashboard">
+        <!-- Quick Stats -->
+        <section class="quick-stats">
+            <div class="stat-card">
+                <h3>Total Collections</h3>
+                <p id="totalCollections">$0.00</p>
+            </div>
+            <div class="stat-card">
+                <h3>Sunday Offertory</h3>
+                <p id="totalOffertory">$0.00</p>
+            </div>
+            <div class="stat-card">
+                <h3>Subscriptions</h3>
+                <p id="totalSubscriptions">$0.00</p>
+            </div>
+            <div class="stat-card">
+                <h3>Event Payments</h3>
+                <p id="totalEventPayments">$0.00</p>
+            </div>
+        </section>
+
+        <!-- Payment Upload Forms -->
+        <section class="payment-forms">
+            <div class="form-tabs">
+                <button class="tab-btn active" onclick="showTab('offertory')">Offertory</button>
+                <button class="tab-btn" onclick="showTab('subscription')">Subscription</button>
+                <button class="tab-btn" onclick="showTab('event')">Event Payment</button>
+            </div>
+
+            <!-- Offertory Form -->
+            <div id="offertory" class="form-section active">
+                <h2>Record Sunday Offertory</h2>
+                <form id="offertoryForm" class="payment-form">
+                    <div class="form-group">
+                        <label for="offertoryDate">Date</label>
+                        <input type="date" id="offertoryDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="offertoryAmount">Amount (USD)</label>
+                        <input type="number" id="offertoryAmount" min="0" step="0.01" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Record Offertory</button>
+                </form>
+            </div>
+
+            <!-- Subscription Form -->
+            <div id="subscription" class="form-section">
+                <h2>Record Subscription Payment</h2>
+                <form id="subscriptionForm" class="payment-form">
+                    <div class="form-group">
+                        <label for="subscriptionType">Subscription Type</label>
+                        <select id="subscriptionType" required>
+                            <option value="">Select Type</option>
+                            <option value="national">National</option>
+                            <option value="parish">Parish</option>
+                            <option value="diocese">Diocese</option>
+                            <option value="regional">Regional</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subscriptionStudent">Student</label>
+                        <select id="subscriptionStudent" required>
+                            <option value="">Select Student</option>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subscriptionAmount">Amount (USD)</label>
+                        <input type="number" id="subscriptionAmount" min="0" step="0.01" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Record Subscription</button>
+                </form>
+            </div>
+
+            <!-- Event Payment Form -->
+            <div id="event" class="form-section">
+                <h2>Record Event Payment</h2>
+                <form id="eventPaymentForm" class="payment-form">
+                    <div class="form-group">
+                        <label for="eventSelect">Event</label>
+                        <select id="eventSelect" required>
+                            <option value="">Select Event</option>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventStudent">Student</label>
+                        <select id="eventStudent" required>
+                            <option value="">Select Student</option>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventPaymentAmount">Amount (USD)</label>
+                        <input type="number" id="eventPaymentAmount" min="0" step="0.01" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Record Payment</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Recent Transactions -->
+        <section class="recent-transactions">
+            <h2>Recent Transactions</h2>
+            <div class="table-container">
+                <table id="transactionsTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Student</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h3>Success!</h3>
+            <p id="successMessage"></p>
+            <button onclick="closeModal()" class="close-btn">Close</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 MSU Catholic Students Union - Midlands State University</p>
+        <p>For God and Learning</p>
+    </footer>
+
+    <script src="js/treasurer.js"></script>
+</body>
+</html> 
